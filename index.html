@@ -56,11 +56,8 @@ rekey=no   
 fragmentation=yes    
 # optional PAM username verification (eg to implement bandwidth quota    
 # pam-authorize=yes    
-#ike=aes256-sha2_512;modp2048,aes128-sha2_512;modp2048,aes256-sha1;modp1024,aes128-sha1;modp1024    
-#ike=3des-sha1,3des-sha2,aes-sha1,aes-sha1;modp1024,aes-sha2,aes-sha2;modp1024    
-#ike=3des-sha1,3des-sha2,aes-sha1    
-ike=aes-sha2    
-#phase2alg=3des-sha1,3des-sha2,aes-sha1,aes-sha2    
+ike=3des-sha1,3des-sha2,aes-sha1,aes-sha1;modp1024,aes-sha2,aes-sha2;modp1024    
+phase2alg=3des-sha1,3des-sha2,aes-sha1,aes-sha2
 # route-based VPN requires marking and an interface    
 mark=5/0xffffffff    
 vti-interface=vti01    
