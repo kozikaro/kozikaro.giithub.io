@@ -15,9 +15,59 @@
 <body class="" lang="en-US">
 <pre>
 Registry changes required to get Windows 7+ VPN connection to Centos7 libreswan:
-not required: Computer\HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Rasman\Parameters\NegotiateDH2048_AES256 DWORD 1
+not required win10: Computer\HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Rasman\Parameters\NegotiateDH2048_AES256 DWORD 1
 not required: Computer\HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Rasman\Parameters\DisableIKENameEkuCheck DWORD 1 
 not required: Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PolicyAgent\AssumeUDPEncapsulationContextOnSendRule DWORD 2
+
+
+conn ikev2-cp    
+# The server's actual IP goes here - not elastic IPs    
+left=192.168.83.18    
+leftcert=elicentos7    
+leftid=elicentos7    
+leftsendcert=always    
+leftrsasigkey=%cert    
+leftsubnet=192.168.66.0/24    
+# Clients    
+right=%any    
+# your addresspool to use - you might need NAT rules if providing full internet to clients    
+rightaddresspool=192.168.66.1-192.168.66.2    
+rightxauthclient=yes    
+# optional rightid with restrictions    
+# rightid="C=CA, L=Toronto, O=Libreswan Project, OU=*, CN=*, E=*"    
+rightca=%same    
+rightrsasigkey=%cert    
+#    
+# connection configuration    
+# DNS servers for clients to use    
+#modecfgdns=8.8.8.8,193.100.157.123    
+# Versions up to 3.22 used modecfgdns1 and modecfgdns2    
+#modecfgdns1=8.8.8.8    
+#modecfgdns2=193.110.157.123    
+narrowing=yes    
+# recommended dpd/liveness to cleanup vanished clients    
+dpddelay=30    
+dpdtimeout=120    
+dpdaction=clear    
+auto=add    
+ikev2=insist    
+rekey=no    
+# ikev2 fragmentation support requires libreswan 3.14 or newer    
+fragmentation=yes    
+# optional PAM username verification (eg to implement bandwidth quota    
+# pam-authorize=yes    
+#ike=aes256-sha2_512;modp2048,aes128-sha2_512;modp2048,aes256-sha1;modp1024,aes128-sha1;modp1024    
+#ike=3des-sha1,3des-sha2,aes-sha1,aes-sha1;modp1024,aes-sha2,aes-sha2;modp1024    
+#ike=3des-sha1,3des-sha2,aes-sha1    
+ike=aes-sha2    
+#phase2alg=3des-sha1,3des-sha2,aes-sha1,aes-sha2    
+# route-based VPN requires marking and an interface    
+mark=5/0xffffffff    
+vti-interface=vti01    
+# do not setup routing because we don't want to send 0.0.0.0/0 over the tunnel    
+vti-routing=no    
+#If you run a subnet with BGP (quagga) daemons over IPsec, you can configure the VTI interface    
+leftvti=192.168.66.0/24
 </pre>
 </body>
 </html>
